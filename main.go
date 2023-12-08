@@ -7,6 +7,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -82,8 +83,14 @@ func main() {
 	}
 
 	serverAddr := fmt.Sprintf(":%s", port)
+	server := &http.Server{
+		Addr:         serverAddr,
+		Handler:      router,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 5 * time.Second,
+	}
 	fmt.Printf("Server is running on http://localhost:%s\n", port)
-	err := http.ListenAndServe(serverAddr, router)
+	err := server.ListenAndServe()
 	if err != nil {
 		fmt.Printf("Error starting server: %s\n", err)
 	}
