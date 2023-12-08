@@ -30,8 +30,7 @@ func WebFingerHandler(links []Link) http.HandlerFunc {
 			http.Error(w, "Missing 'resource' parameter", http.StatusBadRequest)
 			return
 		}
-		fmt.Println("WebFinger got accessed with resource: ", resource)
-		fmt.Println(r.URL.Query().Get("rel"))
+		fmt.Println("WebFinger got accessed with resource: ", resource, " and relation: ", r.URL.Query().Get("rel"))
 		user := User{
 			Subject: resource,
 			Links:   links,
