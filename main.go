@@ -37,7 +37,12 @@ func WebFingerHandler(links []Link) http.HandlerFunc {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(user)
+		encoder := json.NewEncoder(w)
+		if err := encoder.Encode(user); err != nil {
+			fmt.Println("Error encoding JSON: " + err.Error())
+			http.Error(w, "Error encoding JSON: see server logs", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
